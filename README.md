@@ -3,5 +3,5 @@ Minimal XDP example code licensed under LGPL-2.1-or-later and BSD-2-Clause. See 
 ```
 $ make vmlinux.h
 $ make
-$ ./example eth0
+$ ./minimal eth0
 ```
