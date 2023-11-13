@@ -45,14 +45,14 @@ int main(int argc, char **argv) {
     libbpf_set_print(libbpf_print);
 
     int err;
-    struct example_bpf *obj;
+    struct minimal_bpf *obj;
 
-    obj = example_bpf__open();
+    obj = minimal_bpf__open();
     if (!obj) {
         fprintf(stderr, "failed to open BPF object\n");
         return EXIT_FAILURE;
     }
-    err = example_bpf__load(obj);
+    err = minimal_bpf__load(obj);
     if (err) {
         fprintf(stderr, "failed to load BPF object: %d\n", err);
         goto cleanup;
