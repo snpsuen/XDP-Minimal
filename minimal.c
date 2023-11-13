@@ -9,7 +9,7 @@
 /* XDP_FLAGS_SKB_MODE */
 #include <linux/if_link.h>
 
-#include "example.skel.h"
+#include "minimal.skel.h"
 
 
 static int libbpf_print(enum libbpf_print_level level, const char *format, va_list args) {
