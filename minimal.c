@@ -11,7 +11,6 @@
 
 #include "minimal.skel.h"
 
-
 static int libbpf_print(enum libbpf_print_level level, const char *format, va_list args) {
     if (level == LIBBPF_DEBUG) {
         return 0;
@@ -85,7 +84,7 @@ int main(int argc, char **argv) {
     }
 
 cleanup:
-    example_bpf__destroy(obj);
+    minimal_bpf__destroy(obj);
 
     if (err) {
         return EXIT_FAILURE;
