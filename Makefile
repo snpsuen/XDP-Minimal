@@ -3,13 +3,11 @@ CFLAGS = -g -O2 -Wall -Wextra
 
 PROGS = minimal
 
-
 all: $(PROGS)
 
 clean:
 	rm -f $(PROGS)
 	rm -f vmlinux.h *.bpf.o *.skel.h
-
 
 vmlinux.h:
 	bpftool btf dump file /sys/kernel/btf/vmlinux format c > $@
