@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
      * Use "xdpgeneric" mode; less performance but supported by all drivers
      */
     int flags = XDP_FLAGS_UPDATE_IF_NOEXIST;
-    int flags |= XDP_FLAGS_SKB_MODE;
+    flags |= XDP_FLAGS_SKB_MODE;
     
     int fd = bpf_program__fd(obj->progs.xdp_prog);
 
