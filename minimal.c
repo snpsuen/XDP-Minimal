@@ -53,40 +53,36 @@ int main(int argc, char **argv) {
     err = minimal_bpf__load(obj);
     if (err) {
         fprintf(stderr, "failed to load BPF object: %d\n", err);
-        goto cleanup;
+        minimal_bpf__destroy(obj);
+        return EXIT_FAILURE;
     }
 
     /*
      * Use "xdpgeneric" mode; less performance but supported by all drivers
      */
-    int flags = XDP_FLAGS_SKB_MODE;
+    int flags = XDP_FLAGS_UPDATE_IF_NOEXIST;
+    int flags |= XDP_FLAGS_SKB_MODE;
+    
     int fd = bpf_program__fd(obj->progs.xdp_prog);
 
     /* Attach BPF to network interface */
-    err = bpf_set_link_xdp_fd(ifindex, fd, flags);
-    if (err) {
-        fprintf(stderr, "failed to attach BPF to iface %s (%d): %d\n",
-            iface, ifindex, err);
-        goto cleanup;
+    err = bpf_xdp_attach(ifindex, fd, flags, NULL);
+    if (err < 0) { {
+        fprintf(stderr, "failed to attach BPF to iface %s (%d): %d\n", iface, ifindex, err);
+        minimal_bpf__destroy(obj);
+        return EXIT_FAILURE;
     }
 
     // XXX: replace with actual code, e.g. loop to get data from BPF
     sleep(10);
 
     /* Remove BPF from network interface */
-    fd = -1;
-    err = bpf_set_link_xdp_fd(ifindex, fd, flags);
-    if (err) {
-        fprintf(stderr, "failed to detach BPF from iface %s (%d): %d\n",
-            iface, ifindex, err);
-        goto cleanup;
-    }
-
-cleanup:
-    minimal_bpf__destroy(obj);
-
-    if (err) {
+    err = bpf_xdp_detach(ifindex, flags, NULL);
+    if (err < 0) {
+        fprintf(stderr, "failed to detach BPF from iface %s (%d): %d\n", iface, ifindex, err);
+        minimal_bpf__destroy(obj);
         return EXIT_FAILURE;
     }
+                  
     return EXIT_SUCCESS;
 }
