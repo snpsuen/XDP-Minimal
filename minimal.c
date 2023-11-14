@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     }
 
     // XXX: replace with actual code, e.g. loop to get data from BPF
-    sleep(10);
+    sleep(30);
 
     /* Remove BPF from network interface */
     err = bpf_xdp_detach(ifindex, flags, NULL);
