@@ -18,7 +18,6 @@ static int libbpf_print(enum libbpf_print_level level, const char *format, va_li
     return vfprintf(stderr, format, args);
 }
 
-
 int main(int argc, char **argv) {
     if (argc != 2) {
         fprintf(stderr, "usage: %s <iface>\n", argv[0]);
