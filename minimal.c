@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
 
     /* Attach BPF to network interface */
     err = bpf_xdp_attach(ifindex, fd, flags, NULL);
-    if (err < 0) { {
+    if (err < 0) {
         fprintf(stderr, "failed to attach BPF to iface %s (%d): %d\n", iface, ifindex, err);
         minimal_bpf__destroy(obj);
         return EXIT_FAILURE;
