@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
             iface = argv[1];
             interval = 30;
             break;
-        case default:
+        default:
             iface = argv[1];
             interval = atoi(argv[2]);
     }
