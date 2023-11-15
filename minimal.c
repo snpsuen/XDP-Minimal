@@ -4,6 +4,7 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include <bpf/bpf.h>
 /* XDP_FLAGS_SKB_MODE */
@@ -19,12 +20,22 @@ static int libbpf_print(enum libbpf_print_level level, const char *format, va_li
 }
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        fprintf(stderr, "usage: %s <iface>\n", argv[0]);
-        return EXIT_FAILURE;
+    char* iface;
+    int interval;
+    switch(argc) {
+        case 1:
+            iface = "eth0";
+            interval = 30;
+            break;
+        case 2:
+            iface = argv[1];
+            interval = 30;
+            break;
+        case default:
+            iface = argv[1];
+            interval = atoi(argv[2]);
     }
-
-    const char *iface = argv[1];
+    
     unsigned int ifindex = if_nametoindex(iface);
     if (!ifindex) {
         perror("failed to resolve iface to ifindex");
@@ -74,7 +85,7 @@ int main(int argc, char **argv) {
     }
 
     // XXX: replace with actual code, e.g. loop to get data from BPF
-    sleep(30);
+    sleep(interval);
 
     /* Remove BPF from network interface */
     err = bpf_xdp_detach(ifindex, flags, NULL);
